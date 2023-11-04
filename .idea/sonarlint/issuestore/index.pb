@@ -10,3 +10,6 @@ G
 bases/MOCK_DATA (2).csv,b\f\bf53de51d2a5aa7f7fcc60c91a80aae57e7a8126
 G
 bases/MOCK_DATA (3).csv,0\e\0ed542f44bd43d9fa52a56eb7b015ebef315f2d0
+:
+
+emails.txt,5\9\599b6848f6c32a8324f44e5ecb9baeb8d01d37ac

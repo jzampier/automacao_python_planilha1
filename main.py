@@ -30,7 +30,7 @@ ic(consolidated_worksheet)
 # Save consolidated worksheet in an Excel file
 consolidated_worksheet.to_excel('Sales.xlsx', index=False)
 
-# TODO: Create a routine to send an email with the consolidated sales (Sales.xlsx)
+# Email routine
 load_dotenv()
 # environment variables
 SENDER = os.getenv('SENDER')

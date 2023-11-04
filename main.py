@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 # path and list of files
 path = "bases"
 files = os.listdir(path)
-# ic(files)
 
 # Create consolidated worksheet
 consolidated_worksheet = pd.DataFrame()
@@ -19,9 +18,11 @@ consolidated_worksheet = pd.DataFrame()
 # Loop through files
 for file_name in files:
     full_path = os.path.join(path, file_name)
-    sales_table = pd.read_csv(full_path)
-    # ic(sales_table)
-    consolidated_worksheet = pd.concat([consolidated_worksheet, sales_table])
+    try:
+        sales_table = pd.read_csv(full_path)
+        consolidated_worksheet = pd.concat([consolidated_worksheet, sales_table])
+    except Exception as e:
+        ic(f"Error reading file {full_path}: {e}")
 
 consolidated_worksheet = consolidated_worksheet.sort_values(by='first_name')
 consolidated_worksheet = consolidated_worksheet.reset_index(drop=True)
@@ -56,21 +57,27 @@ def send_email():
                     <p>Análise de dados</p>"""
     msg.attach(MIMEText(body, 'html'))
     file = 'Sales.xlsx'
-    attachment = open(file, 'rb')
-    part = MIMEBase('application', 'octet-stream')
-    part.set_payload(attachment.read())
-    encoders.encode_base64(part)
-    part.add_header('Content-Disposition', "attachment; filename=%s" % file)
-    msg.attach(part)
+    try:
+        with open(file, 'rb') as attachment:
+            part = MIMEBase('application', 'octet-stream')
+            part.set_payload(attachment.read())
+            encoders.encode_base64(part)
+            part.add_header('Content-Disposition', f"attachment; filename={file}")
+            msg.attach(part)
+    except Exception as e:
+        ic(f"Error attaching file {file}: {e}")
+        return
 
     # Send the email
-    # start smtp session
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(SENDER, PASSWORD)
-    server.sendmail(SENDER, RECEIVER, msg.as_string())
-    server.quit()
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(SENDER, PASSWORD)
+        server.sendmail(SENDER, RECEIVER, msg.as_string())
+        server.quit()
+        ic('Email sent!')
+    except Exception as e:
+        ic(f"Error sending email: {e}")
 
 
 send_email()
-ic('Email sent!')

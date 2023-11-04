@@ -30,7 +30,7 @@ ic(consolidated_worksheet)
 
 # Save consolidated worksheet in an Excel file
 consolidated_worksheet.to_excel('Sales.xlsx', index=False)
-
+excel_file: str = 'Sales.xlsx'
 # Email routine
 load_dotenv()
 # environment variables
@@ -39,7 +39,7 @@ PASSWORD = os.getenv('PASSWORD')
 RECEIVER = os.getenv('RECEIVER')
 
 
-def send_email():
+def send_email(attachment_file: str):
     # Prepare the email (message + attachment)
     msg = MIMEMultipart()
     msg['From'] = SENDER
@@ -56,7 +56,7 @@ def send_email():
                     <p>Cordialmente,</p>
                     <p>Análise de dados</p>"""
     msg.attach(MIMEText(body, 'html'))
-    file = 'Sales.xlsx'
+    file = attachment_file
     try:
         with open(file, 'rb') as attachment:
             part = MIMEBase('application', 'octet-stream')
@@ -80,4 +80,4 @@ def send_email():
         ic(f"Error sending email: {e}")
 
 
-send_email()
+send_email(excel_file)

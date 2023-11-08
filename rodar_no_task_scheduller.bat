@@ -1,0 +1,1 @@
+cd C:\projetos\ProjetosPython\automacaoPlanilha1\venv\Scripts\ && call activate.bat && cd C:\projetos\ProjetosPython\automacaoPlanilha1\ && python main.py
